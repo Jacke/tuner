@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "node-id3": "^0.1.0",
     "shelljs": "^0.7.8",
     "telegraf": "^3.13.0",
     "telegraf-command-parts": "^1.0.3",

@@ -4,6 +4,8 @@ const commandParts = require('telegraf-command-parts');
 const TelegrafFlow = require('telegraf-flow')
 const { Scene, enter, leave } = TelegrafFlow
 const TelegrafWit = require('telegraf-wit')
+const NodeID3 = require('node-id3')
+const TEST_MP3 = 'CQADAgAD8QADVZ9RS8gSYXVWe1PfAg';
 
 require('shelljs/global');
 
@@ -36,11 +38,25 @@ app.hears('help', (ctx) => {
 app.hears(/track (.+)/ig,(ctx) => {
   console.log('ctx.state.command',ctx.state.command);
   const name = ctx.match[1];
+  let filePath = 'mp3/'+name+'.mp3'
+  let file = filePath //|| new Buffer("Some Buffer of a (mp3) file")
+
   //console.log('name'+name);
-  ctx.replyWithAudio({source: 'mp3/'+name+'.mp3'}, {title: 'rockstar', performer: 'Post malone (feat 21 Savage)'}).then((f) => {
-      messageIds.push(f);
-      console.log(messageIds);
-  });
+  try {
+    let tags = NodeID3.read(file)
+    console.log('tags', tags)
+    console.log('tags', tags);
+    let title = tags.title
+    let artist = tags.artist
+    ctx.replyWithAudio({source: filePath}, {title: title, performer: artist}).then((f) => {
+        messageIds.push(f);
+        console.log(messageIds);
+    });
+  } catch(e) {
+    console.log(e)
+  } finally {
+    ctx.reply(`Track ${name} Not found`);
+  }
 });
 
 
@@ -84,18 +100,42 @@ app.hears('give all music',(ctx) => {
 app.hears(/get (.+)/ig,(ctx) => {
   console.log(ctx);
   const track_url = ctx.match[1];
-  ctx.reply (mp3Get(track_url) )
+  mp3Get(track_url, ctx);
 });
 
 
 
-function mp3Get(query = '', offset, limit) {
+function mp3Get(query = '', ctx, offset, limit) {
   console.log('track_url'+query);
-  exec('python download.py --id 82bdf4e0f06c7474515a6cc1bbe39a20 --track '+query, function(status, output) {
-  console.log('Exit status:', status);
-  console.log('Program output:', output);
-    return 'Status: '+ status+' Output:' +output;
-  });
+  let savePath = query.replace('https://soundcloud.com/','').replace('/','_');
+  console.log('savePath', savePath);
+  exec('mkdir -p ./mp3/'+savePath, (stat, ou) => {
+    exec('scdl --path ./mp3/'+savePath+' -c -l '+query, function(status, output) {
+    console.log('Exit status:', status);
+    console.log('Program output:', output);
+
+      //if (status == '0'){
+        let track_name = output.replace('"','').replace('"\n','');
+        //let title = track_name.split(' - ')[1];
+        //let artist = track_name.split(' - ')[0];
+        exec('ls ./mp3/'+savePath, (stat, pathout) => {
+        let filePath = `./mp3/${savePath}/${pathout}`.replace(' ','');
+          console.log('pathout', pathout);
+          console.log('filePath', filePath);
+        //  Create a ID3-Frame buffer from passed tags
+        //  Synchronous
+        //let ID3FrameBuffer = NodeID3.create(tags)   //  Returns ID3-Frame buffer
+        //  Write ID3-Frame into (.mp3) file
+        //let success = NodeID3.write(tags, filePath) //  Returns true/false
+  //      console.log('tag', success);
+  //      NodeID3.write(tags, filePath, function(err) { 
+  //        ctx.replyWithAudio({source: filePath})
+  //        console.log('tags err', err) });
+          ctx.replyWithAudio({source: filePath})
+          return {status: true, filePath: filePath}
+        })
+    });
+  })
 }
 
 function musicSearch(query = '', offset = 0, limit = 0) {
@@ -117,16 +157,16 @@ app.on('inline_query', (ctx) => {
 
 return ctx.answerInlineQuery([{
         type: 'audio',
-        id: 'CQADAgADOwEAAvILIEsIYOVglR4IxwI',
-        audio_file_id: 'CQADAgADOwEAAvILIEsIYOVglR4IxwI',
+        id: TEST_MP3,
+        audio_file_id: TEST_MP3,
         duration: 1221,
         file_size: 3211,
         title: 'rockstar (feat. 21 Savage) 2',
       }, 
       ]).then((fz)=> console.log(fz))//, {next_offset: offset + 30})
 
-  ctx.telegram.getFile('CQADAgADOwEAAvILIEsIYOVglR4IxwI').then((fileData) => {
-    ctx.telegram.getFileLink('CQADAgADOwEAAvILIEsIYOVglR4IxwI').then((fileLink) => {
+  ctx.telegram.getFile(TEST_MP3).then((fileData) => {
+    ctx.telegram.getFileLink(TEST_MP3).then((fileLink) => {
       console.log('fileData', fileData,fileLink);
       
     });
