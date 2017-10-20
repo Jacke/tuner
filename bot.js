@@ -1,5 +1,7 @@
-const Telegraf = require('telegraf');
-const { Markup } = require('telegraf')
+const Telegraf = require('telegraf'),
+  LocalSession = require('telegraf-session-local')
+
+const { Markup, reply } = require('telegraf')
 const commandParts = require('telegraf-command-parts');
 const TelegrafFlow = require('telegraf-flow')
 const { Scene, enter, leave } = TelegrafFlow
@@ -17,6 +19,33 @@ var tracks = [];
 
 
 const app = new Telegraf(BOT_TOKEN);
+app.use(Telegraf.memorySession());
+
+const greeterScene = new Scene('greeter')
+greeterScene.enter((ctx) => ctx.reply('Hi'))
+greeterScene.leave((ctx) => ctx.reply('Buy'))
+greeterScene.hears(/hi/gi, leave())
+greeterScene.on('message', (ctx) => ctx.replyWithMarkdown('Send `hi`'))
+
+// Echo scene
+const echoScene = new Scene('echo')
+echoScene.enter((ctx) => ctx.reply('echo scene'))
+echoScene.leave((ctx) => ctx.reply('exiting echo scene'))
+echoScene.command('back', leave())
+echoScene.on('text', (ctx) => ctx.reply(ctx.message.text))
+echoScene.on('message', (ctx) => ctx.reply('Only text messages please'))
+
+const flow = new TelegrafFlow([greeterScene, echoScene], { ttl: 10 })
+app.command('help', (ctx) => ctx.reply('Help message'))
+app.command('greeter', enter('greeter'))
+app.command('echo', enter('echo'))
+
+
+
+
+
+app.use(flow.middleware())
+app.use(commandParts());
 
 app.command('start', ({ from, reply }) => {
   console.log('start', from)
@@ -31,12 +60,12 @@ app.hears('hi', (ctx) => {
 
 
 app.hears('help', (ctx) => { 
-  ctx.reply('"all music", "track [название]", "get [soundcloud url]", "give all music" ').then((f) => {
+  ctx.reply('/tracks, /track [название], get [soundcloud url], /give_all ').then((f) => {
   });
 
 });
 app.hears(/track (.+)/ig,(ctx) => {
-  console.log('ctx.state.command',ctx.state.command);
+  console.log('ctx.state.command', ctx.state.command);
   const name = ctx.match[1];
   let filePath = 'mp3/'+name+'.mp3'
   let file = filePath //|| new Buffer("Some Buffer of a (mp3) file")
@@ -71,7 +100,7 @@ app.action('delete', (ctx) => {
   ctx.deleteMessage()
 })
 
-app.hears('all music',(ctx) => {
+app.command('/tracks', (ctx) => {
   console.log(ctx);
   console.log('tracks', tracks);
   exec('ls ./mp3/', function(status, output) {
@@ -81,7 +110,7 @@ app.hears('all music',(ctx) => {
   });
 });
 
-app.hears('give all music',(ctx) => {
+app.command('/give_all',(ctx) => {
   console.log(ctx);
   exec('ls ./mp3/', function(status, output) {
   console.log('Exit status:', status);
@@ -97,10 +126,11 @@ app.hears('give all music',(ctx) => {
 });
 
 
-app.hears(/get (.+)/ig,(ctx) => {
-  console.log(ctx);
-  const track_url = ctx.match[1];
-  mp3Get(track_url, ctx);
+app.command('/get',(ctx) => {
+  console.log(ctx.state, ctx.state.command);
+  
+  //const track_url = ctx.match[1];
+  //mp3Get(track_url, ctx);
 });
 
 
@@ -193,36 +223,76 @@ app.hears('r', (ctx) => {
 app.on('sticker', (ctx) => ctx.reply('👍'))
 
 
-const greeterScene = new Scene('greeter')
-greeterScene.enter((ctx) => ctx.reply('Hi'))
-greeterScene.leave((ctx) => ctx.reply('Buy'))
-greeterScene.hears(/hi/gi, leave())
-greeterScene.on('message', (ctx) => ctx.replyWithMarkdown('Send `hi`'))
-
-// Echo scene
-const echoScene = new Scene('echo')
-echoScene.enter((ctx) => ctx.reply('echo scene'))
-echoScene.leave((ctx) => ctx.reply('exiting echo scene'))
-echoScene.command('back', leave())
-echoScene.on('text', (ctx) => ctx.reply(ctx.message.text))
-echoScene.on('message', (ctx) => ctx.reply('Only text messages please'))
-
-const flow = new TelegrafFlow([greeterScene, echoScene], { ttl: 10 })
-app.use(Telegraf.memorySession())
-app.use(flow.middleware())
-app.command('help', (ctx) => ctx.reply('Help message'))
-app.command('greeter', enter('greeter'))
-app.command('echo', enter('echo'))
 
 
-app.use(commandParts());
+
+
+
+
+
+
+
+// Name of session property object in Telegraf Context (default: 'session')
+const property = 'data'
+
+const localSession = new LocalSession({
+  // Database name/path, where sessions will be located (default: 'sessions.json')
+  database: 'example_db.json',
+  // Name of session property object in Telegraf Context (default: 'session')
+  property: 'session',
+  // Type of lowdb storage (default: 'storagefileAsync')
+  storage: LocalSession.storagefileAsync,
+  // Format of storage/database (default: JSON.stringify / JSON.parse)
+  format: {
+    serialize: (obj) => JSON.stringify(obj, null, 2), // null & 2 for pretty-formatted JSON
+    deserialize: (str) => JSON.parse(str),
+  },
+  // We will use `messages` array in our database to store user messages using exported lowdb instance from LocalSession via Telegraf Context
+  state: { messages: [] }
+})
+
+// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
+app.use(localSession.middleware(property))
+
+app.on('text', (ctx, next) => {
+  ctx[property].counter = ctx[property].counter || 0
+  ctx[property].counter++
+  // Writing message to Array `messages` into database which already has sessions Array
+  ctx[property + 'DB'].get('messages').push([ctx.message]).write()
+  // `property`+'DB' is a name of property which contains lowdb instance (`dataDB`)
+
+  return next()
+})
+
+app.command('/stats', (ctx) => {
+  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
+     msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
+  ctx.replyWithMarkdown(msg)
+})
+app.command('/remove', (ctx) => {
+  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
+  // Setting session to null, undefined or empty object/array will trigger removing it from database
+  ctx[property] = null
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 app.startPolling()
 //const Telegraf = require('telegraf')
-const { reply } = Telegraf
 
 
 
