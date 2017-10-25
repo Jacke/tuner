@@ -16,11 +16,6 @@ const BOT_TOKEN = '420540547:AAH4J80B3iGA_BGcGYmj0yOVPCFgWRNQKAA'
 var messageIds = [];
 var tracks = [];
 
-
-
-const app = new Telegraf(BOT_TOKEN);
-app.use(Telegraf.memorySession());
-
 const greeterScene = new Scene('greeter')
 greeterScene.enter((ctx) => ctx.reply('Hi'))
 greeterScene.leave((ctx) => ctx.reply('Buy'))
@@ -34,8 +29,16 @@ echoScene.leave((ctx) => ctx.reply('exiting echo scene'))
 echoScene.command('back', leave())
 echoScene.on('text', (ctx) => ctx.reply(ctx.message.text))
 echoScene.on('message', (ctx) => ctx.reply('Only text messages please'))
-
 const flow = new TelegrafFlow([greeterScene, echoScene], { ttl: 10 })
+
+
+const app = new Telegraf(BOT_TOKEN);
+app.use(Telegraf.memorySession());
+
+app.use(flow.middleware())
+app.use(commandParts());
+
+
 app.command('help', (ctx) => ctx.reply('Help message'))
 app.command('greeter', enter('greeter'))
 app.command('echo', enter('echo'))
@@ -43,9 +46,6 @@ app.command('echo', enter('echo'))
 
 
 
-
-app.use(flow.middleware())
-app.use(commandParts());
 
 app.command('start', ({ from, reply }) => {
   console.log('start', from)
@@ -128,9 +128,8 @@ app.command('/give_all',(ctx) => {
 
 app.command('/get',(ctx) => {
   console.log(ctx.state, ctx.state.command);
-  
   //const track_url = ctx.match[1];
-  //mp3Get(track_url, ctx);
+  mp3Get(ctx.state.args, ctx);
 });
 
 

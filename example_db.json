@@ -3,7 +3,7 @@
     {
       "id": "53170594:53170594",
       "data": {
-        "counter": 4
+        "counter": 12
       }
     }
   ],
@@ -115,6 +115,182 @@
             "type": "bot_command"
           }
         ]
+      }
+    ],
+    [
+      {
+        "message_id": 589,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508891944,
+        "text": "t"
+      }
+    ],
+    [
+      {
+        "message_id": 590,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508891960,
+        "text": "f"
+      }
+    ],
+    [
+      {
+        "message_id": 589,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508891944,
+        "text": "t"
+      }
+    ],
+    [
+      {
+        "message_id": 590,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508891960,
+        "text": "f"
+      }
+    ],
+    [
+      {
+        "message_id": 589,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508891944,
+        "text": "t"
+      }
+    ],
+    [
+      {
+        "message_id": 590,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508891960,
+        "text": "f"
+      }
+    ],
+    [
+      {
+        "message_id": 596,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508892151,
+        "text": "Привет, слушай, я звонил инвестору, он не знает что с баблом, банк задержал. Я понимаю это мой косяк, но ты можешь перенести поездку еще на чуть более позднее время? В пятницу они точно должны прийти. С меня причетается👌"
+      }
+    ],
+    [
+      {
+        "message_id": 601,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1508892200,
+        "text": "Ну либо приезжай сейчас, но квартиру я не смогу взять"
       }
     ]
   ]
