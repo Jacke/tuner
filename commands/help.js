@@ -1,0 +1,1 @@
+export default (ctx) => ctx.reply('/tracks, /track [название], get [soundcloud url], /give_all ');
