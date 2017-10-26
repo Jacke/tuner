@@ -21,9 +21,6 @@ import getCommand from './commands/get';
 import inlineSearch from './inline_search';
 import {sessionProperty, localSession} from './localSession';
 
-var messageIds = [];
-var tracks = [];
-
 const greeterScene = new Scene('greeter')
 greeterScene.enter((ctx) => ctx.reply('Hi'))
 greeterScene.leave((ctx) => ctx.reply('Buy'))
@@ -85,9 +82,9 @@ app.command('greeter', enter('greeter'))
 app.command('echo', enter('echo'))
 app.command('start', startCommand)
 app.command('track', trackCommand)
-app.command('/tracks', tracksCommand);
-app.command('/give_all', giveAllCommand);
-app.command('/get', getCommand);
+app.command('tracks', tracksCommand);
+app.command('give_all', giveAllCommand);
+app.command('get', getCommand);
 app.on('inline_query', inlineSearch);
 app.on('sticker', (ctx) => ctx.reply('👍'))
 app.command('/stats', (ctx) => {
@@ -111,8 +108,20 @@ app.on('text', (ctx, next) => {
 })
 
 
-
-
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// TODO
+app.command('search', (ctx) => ctx.reply('👍'));
+app.command('sync', (ctx) => ctx.reply('Sync profile'));
+app.command('top', (ctx) => ctx.reply('👍'));
+app.command('listen', (ctx) => ctx.reply('Gives you random music'));
+app.command('playlist', (ctx) => ctx.reply('Gives you random music'));
+// TBA //app.command('artists', (ctx) => ctx.reply('👍'));
+// TBA //app.command('albums', (ctx) => ctx.reply('👍'));
+// TBA //app.command('genres', (ctx) => ctx.reply('👍'));
+// TBA //app.command('mood', (ctx) => ctx.reply('👍'));
+//////////////////////////////////////////////////////////////////////////////
+// TEMP WEB PAGE FOR PREVIEW RESULTS
+///////////////////////////////////////////////////////////////////////////////
 
 
 
