@@ -8,7 +8,7 @@ const { Scene, enter, leave } = TelegrafFlow
 const TelegrafWit = require('telegraf-wit')
 const NodeID3 = require('node-id3')
 const TEST_MP3 = 'CQADAgAD8QADVZ9RS8gSYXVWe1PfAg';
-
+const STORAGE_DIR = './storage/mp3/'
 require('shelljs/global');
 
 const BOT_TOKEN = '420540547:AAH4J80B3iGA_BGcGYmj0yOVPCFgWRNQKAA'
@@ -67,7 +67,7 @@ app.hears('help', (ctx) => {
 app.hears(/track (.+)/ig,(ctx) => {
   console.log('ctx.state.command', ctx.state.command);
   const name = ctx.match[1];
-  let filePath = 'mp3/'+name+'.mp3'
+  let filePath = STORAGE_DIR+name+'.mp3'
   let file = filePath //|| new Buffer("Some Buffer of a (mp3) file")
 
   //console.log('name'+name);
@@ -103,7 +103,7 @@ app.action('delete', (ctx) => {
 app.command('/tracks', (ctx) => {
   console.log(ctx);
   console.log('tracks', tracks);
-  exec('ls ./mp3/', function(status, output) {
+  exec('ls '+STORAGE_DIR, function(status, output) {
   console.log('Exit status:', status);
   console.log('Program output:', output);
     ctx.reply(output);
@@ -112,13 +112,13 @@ app.command('/tracks', (ctx) => {
 
 app.command('/give_all',(ctx) => {
   console.log(ctx);
-  exec('ls ./mp3/', function(status, output) {
+  exec('ls '+STORAGE_DIR, function(status, output) {
   console.log('Exit status:', status);
   console.log('Program output:', output);
     const tracks = output.match(/[^\r\n]+/g);
     tracks.forEach((name) => {
       console.log('track'+name)
-      ctx.replyWithAudio({source: 'mp3/'+name}).then((f) => {
+      ctx.replyWithAudio({source: 'storage/mp3/'+name}).then((f) => {
         tracks.push(f);
       });      
     })
@@ -138,8 +138,8 @@ function mp3Get(query = '', ctx, offset, limit) {
   console.log('track_url'+query);
   let savePath = query.replace('https://soundcloud.com/','').replace('/','_');
   console.log('savePath', savePath);
-  exec('mkdir -p ./mp3/'+savePath, (stat, ou) => {
-    exec('scdl --path ./mp3/'+savePath+' -c -l '+query, function(status, output) {
+  exec('mkdir -p '+STORAGE_DIR+savePath, (stat, ou) => {
+    exec('scdl --path '+STORAGE_DIR+savePath+' -c -l '+query, function(status, output) {
     console.log('Exit status:', status);
     console.log('Program output:', output);
 
@@ -147,8 +147,8 @@ function mp3Get(query = '', ctx, offset, limit) {
         let track_name = output.replace('"','').replace('"\n','');
         //let title = track_name.split(' - ')[1];
         //let artist = track_name.split(' - ')[0];
-        exec('ls ./mp3/'+savePath, (stat, pathout) => {
-        let filePath = `./mp3/${savePath}/${pathout}`.replace(' ','');
+        exec('ls '+STORAGE_DIR+savePath, (stat, pathout) => {
+        let filePath = `${STORAGE_DIR}${savePath}/${pathout}`.replace(' ','');
           console.log('pathout', pathout);
           console.log('filePath', filePath);
         //  Create a ID3-Frame buffer from passed tags
