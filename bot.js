@@ -110,11 +110,25 @@ app.on('text', (ctx, next) => {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// TODO
+const testMenu = Telegraf.Extra
+  .markdown()
+  .markup((m) => m.inlineKeyboard([
+    m.callbackButton('Test button', 'test')
+  ]))
+
+const aboutMenu = Telegraf.Extra
+  .markdown()
+  .markup((m) => m.keyboard([
+    m.callbackButton('⬅️ Back')
+  ]).resize())
+
+
 app.command('search', (ctx) => ctx.reply('👍'));
 app.command('sync', (ctx) => ctx.reply('Sync profile'));
 app.command('top', (ctx) => ctx.reply('👍'));
-app.command('listen', (ctx) => ctx.reply('Gives you random music'));
-app.command('playlist', (ctx) => ctx.reply('Gives you random music'));
+app.command('listen', (ctx) => ctx.reply('Gives you random music', Telegraf.Extra.markup(Markup.removeKeyboard()) ));
+app.command('playlist', (ctx) => ctx.reply('Gives you random music', aboutMenu));
+
 // TBA //app.command('artists', (ctx) => ctx.reply('👍'));
 // TBA //app.command('albums', (ctx) => ctx.reply('👍'));
 // TBA //app.command('genres', (ctx) => ctx.reply('👍'));
