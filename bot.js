@@ -7,11 +7,16 @@ const TelegrafFlow = require('telegraf-flow')
 const { Scene, enter, leave } = TelegrafFlow
 const TelegrafWit = require('telegraf-wit')
 const NodeID3 = require('node-id3')
-const TEST_MP3 = 'CQADAgAD8QADVZ9RS8gSYXVWe1PfAg';
-const STORAGE_DIR = './storage/mp3/'
 require('shelljs/global');
+import database from './database';
 
-const BOT_TOKEN = '420540547:AAH4J80B3iGA_BGcGYmj0yOVPCFgWRNQKAA'
+import {TEST_MP3,
+STORAGE_DIR,
+BOT_TOKEN} from './constants';
+
+
+
+
 
 var messageIds = [];
 var tracks = [];
@@ -289,6 +294,10 @@ app.command('/remove', (ctx) => {
 
 
 
+console.log('TUNER IS RUNNING');  
+console.log('***************');
+console.log('***************');
+console.log('database', database);
 
 app.startPolling()
 //const Telegraf = require('telegraf')
