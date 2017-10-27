@@ -3,7 +3,7 @@
     {
       "id": "53170594:53170594",
       "data": {
-        "counter": 32
+        "counter": 33
       }
     }
   ],
@@ -847,6 +847,35 @@
           {
             "offset": 0,
             "length": 7,
+            "type": "bot_command"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "message_id": 665,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509072103,
+        "text": "/heko",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 5,
             "type": "bot_command"
           }
         ]
