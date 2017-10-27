@@ -19,8 +19,8 @@ import startCommand from './commands/start';
 import trackCommand from './commands/track';
 import getCommand from './commands/get';
 import inlineSearch from './inline_search';
-import {sessionProperty, localSession} from './localSession';
-
+//import {sessionProperty, localSession} from './localSession';
+import startupInfo from './utils/startup_info';
 const greeterScene = new Scene('greeter')
 greeterScene.enter((ctx) => ctx.reply('Hi'))
 greeterScene.leave((ctx) => ctx.reply('Buy'))
@@ -87,17 +87,40 @@ app.command('give_all', giveAllCommand);
 app.command('get', getCommand);
 app.on('inline_query', inlineSearch);
 app.on('sticker', (ctx) => ctx.reply('👍'))
+
+
+// Name of session property object in Telegraf Context (default: 'session')
+export const sessionProperty = 'data'
+export const localSession = new LocalSession({
+  // Database name/path, where sessions will be located (default: 'sessions.json')
+  database: 'example_db.json',
+  // Name of session property object in Telegraf Context (default: 'session')
+  property: 'session',
+  // Type of lowdb storage (default: 'storagefileAsync')
+  storage: LocalSession.storagefileAsync,
+  // Format of storage/database (default: JSON.stringify / JSON.parse)
+  format: {
+    serialize: (obj) => JSON.stringify(obj, null, 2), // null & 2 for pretty-formatted JSON
+    deserialize: (str) => JSON.parse(str),
+  },
+  // We will use `messages` array in our database to store user messages using exported lowdb instance from LocalSession via Telegraf Context
+  state: { messages: [] }
+})
+app.use(localSession.middleware(sessionProperty));
+
+
+console.log('sessionProperty',sessionProperty);
 app.command('/stats', (ctx) => {
-  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-     msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
+  console.log('ctx.data', ctx.data);
+  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${sessionProperty}\`\n`
+     msg += `Database has \`${ctx[sessionProperty].counter}\` messages from @${ctx.from.username}`
   ctx.replyWithMarkdown(msg)
 });
 app.command('/remove', (ctx) => {
   ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
   // Setting session to null, undefined or empty object/array will trigger removing it from database
-  ctx[property] = null
+  ctx[sessionProperty] = null
 });
-app.use(localSession.middleware(sessionProperty))
 app.on('text', (ctx, next) => {
   ctx[sessionProperty].counter = ctx[sessionProperty].counter || 0
   ctx[sessionProperty].counter++
@@ -138,10 +161,6 @@ app.command('playlist', (ctx) => ctx.reply('Gives you random music', aboutMenu))
 ///////////////////////////////////////////////////////////////////////////////
 
 
+startupInfo(database);
 
-
-console.log('TUNER IS RUNNING');  
-console.log('***************');
-console.log('***************');
-console.log('database', database);
 app.startPolling()
