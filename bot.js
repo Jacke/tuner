@@ -82,7 +82,7 @@ app.command('greeter', enter('greeter'))
 app.command('echo', enter('echo'))
 app.command('start', startCommand)
 app.command('track', trackCommand)
-app.command('test', (ctx) => ctx.replyWithPhoto({source: './a.mp3'}, {title: 'title', performer: 'artist'} ))
+app.command('test', (ctx) => ctx.replyWithAudio({source: './a.mp3'}, {title: 'title', performer: 'artist'} ))
 app.command('tracks', tracksCommand);
 app.command('give_all', giveAllCommand);
 app.command('get', getCommand);
