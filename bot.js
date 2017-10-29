@@ -40,6 +40,7 @@ const app = new Telegraf(BOT_TOKEN);
 app.use(Telegraf.memorySession());
 app.use(flow.middleware())
 app.use(commandParts());
+app.use(Telegraf.log())
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// For testing purposes
@@ -155,6 +156,92 @@ app.command('sync', (ctx) => ctx.reply('Sync profile'));
 app.command('top', (ctx) => ctx.reply('👍'));
 app.command('listen', (ctx) => ctx.reply('Gives you random music', Telegraf.Extra.markup(Markup.removeKeyboard()) ));
 app.command('playlist', (ctx) => ctx.reply('Gives you random music', aboutMenu));
+///////////////////////
+
+app.command('onetime', ({ reply }) =>
+  reply('One time keyboard', Markup
+    .keyboard(['/simple', '/inline', '/pyramid'])
+    .oneTime()
+    .resize()
+    .extra()
+  )
+)
+
+app.command('custom', ({ reply }) => {
+  return reply('Custom buttons keyboard', Markup
+    .keyboard([
+      ['🔍 Search', '😎 Popular'], // Row1 with 2 buttons
+      ['☸ Setting', '📞 Feedback'], // Row2 with 2 buttons
+      ['📢 Ads', '⭐️ Rate us', '👥 Share'] // Row3 with 3 buttons
+    ])
+    .oneTime()
+    .resize()
+    .extra()
+  )
+})
+
+app.hears('🔍 Search', ctx => ctx.reply('Yay!'))
+app.hears('📢 Ads', ctx => ctx.reply('Free hugs. Call now!'))
+
+app.command('special', (ctx) => {
+  return ctx.reply('Special buttons keyboard', Extra.markup((markup) => {
+    return markup.resize()
+      .keyboard([
+        markup.contactRequestButton('Send contact'),
+        markup.locationRequestButton('Send location')
+      ])
+  }))
+})
+
+app.command('pyramid', (ctx) => {
+  return ctx.reply('Keyboard wrap', Extra.markup(
+    Markup.keyboard(['one', 'two', 'three', 'four', 'five', 'six'], {
+      wrap: (btn, index, currentRow) => currentRow.length >= (index + 1) / 2
+    })
+  ))
+})
+
+app.command('simple', (ctx) => {
+  return ctx.replyWithHTML('<b>Coke</b> or <i>Pepsi?</i>', Extra.markup(
+    Markup.keyboard(['Coke', 'Pepsi'])
+  ))
+})
+
+app.command('inline', (ctx) => {
+  return ctx.reply('<b>Coke</b> or <i>Pepsi?</i>', Extra.HTML().markup((m) =>
+    m.inlineKeyboard([
+      m.callbackButton('Coke', 'Coke'),
+      m.callbackButton('Pepsi', 'Pepsi')
+    ])))
+})
+
+app.command('random', (ctx) => {
+  return ctx.reply('random example',
+    Markup.inlineKeyboard([
+      Markup.callbackButton('Coke', 'Coke'),
+      Markup.callbackButton('Dr Pepper', 'Dr Pepper', Math.random() > 0.5),
+      Markup.callbackButton('Pepsi', 'Pepsi')
+    ]).extra()
+  )
+})
+
+app.hears(/\/wrap (\d+)/, (ctx) => {
+  return ctx.reply('Keyboard wrap', Extra.markup(
+    Markup.keyboard(['one', 'two', 'three', 'four', 'five', 'six'], {
+      columns: parseInt(ctx.match[1])
+    })
+  ))
+})
+
+app.action('Dr Pepper', (ctx, next) => {
+  return ctx.reply('👍').then(next)
+})
+
+app.action(/.+/, (ctx) => {
+  return ctx.answerCallbackQuery(`Oh, ${ctx.match[0]}! Great choise`)
+})
+
+
 
 // TBA //app.command('artists', (ctx) => ctx.reply('👍'));
 // TBA //app.command('albums', (ctx) => ctx.reply('👍'));

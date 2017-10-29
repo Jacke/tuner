@@ -3,7 +3,7 @@
     {
       "id": "53170594:53170594",
       "data": {
-        "counter": 36
+        "counter": 44
       }
     }
   ],
@@ -952,6 +952,217 @@
             "type": "bot_command"
           }
         ]
+      }
+    ],
+    [
+      {
+        "message_id": 792,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269127,
+        "text": "/onetime",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 8,
+            "type": "bot_command"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "message_id": 793,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269181,
+        "text": "/onetime",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 8,
+            "type": "bot_command"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "message_id": 794,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269186,
+        "text": "/custom",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 7,
+            "type": "bot_command"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "message_id": 795,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269221,
+        "text": "/onetime",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 8,
+            "type": "bot_command"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "message_id": 799,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269249,
+        "text": "/inline",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 7,
+            "type": "bot_command"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "message_id": 800,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269251,
+        "text": "🔍 Search"
+      }
+    ],
+    [
+      {
+        "message_id": 801,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269254,
+        "text": "😎 Popular"
+      }
+    ],
+    [
+      {
+        "message_id": 802,
+        "from": {
+          "id": 53170594,
+          "is_bot": false,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "language_code": "en-US"
+        },
+        "chat": {
+          "id": 53170594,
+          "first_name": "Stan 🔥",
+          "last_name": "Sobolev",
+          "username": "stansob",
+          "type": "private"
+        },
+        "date": 1509269256,
+        "text": "👥 Share"
       }
     ]
   ]
