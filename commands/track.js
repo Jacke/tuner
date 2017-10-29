@@ -1,3 +1,6 @@
+import {TEST_MP3,STORAGE_DIR,BOT_TOKEN} from '../constants';
+const NodeID3 = require('node-id3')
+
 export default (ctx) => {
   console.log('ctx.state.command', ctx.state.command);
   const name = ctx.state.args;

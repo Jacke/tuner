@@ -6,7 +6,6 @@ const commandParts = require('telegraf-command-parts');
 const TelegrafFlow = require('telegraf-flow')
 const { Scene, enter, leave } = TelegrafFlow
 const TelegrafWit = require('telegraf-wit')
-const NodeID3 = require('node-id3')
 require('shelljs/global');
 import database from './database';
 import {TEST_MP3,STORAGE_DIR,BOT_TOKEN} from './constants';
@@ -82,7 +81,11 @@ app.command('greeter', enter('greeter'))
 app.command('echo', enter('echo'))
 app.command('start', startCommand)
 app.command('track', trackCommand)
-app.command('test', (ctx) => ctx.replyWithAudio({source: './a.mp3'}, {title: 'title', performer: 'artist'} ))
+
+app.command('test', (ctx) => {
+  ctx.replyWithAudio({source: './a.mp3'});
+});
+
 app.command('tracks', tracksCommand);
 app.command('give_all', giveAllCommand);
 app.command('get', getCommand);
