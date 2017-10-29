@@ -62,7 +62,6 @@ app.hears('getChat', (ctx) => {
   ctx.getChat().then((t) => {
     console.log(t);
     ctx.reply(t.toString());
-
   });
 });
 app.hears('r', (ctx) => {
@@ -184,7 +183,7 @@ app.hears('🔍 Search', ctx => ctx.reply('Yay!'))
 app.hears('📢 Ads', ctx => ctx.reply('Free hugs. Call now!'))
 
 app.command('special', (ctx) => {
-  return ctx.reply('Special buttons keyboard', Extra.markup((markup) => {
+  return ctx.reply('Special buttons keyboard', Telegraf.Extra.markup((markup) => {
     return markup.resize()
       .keyboard([
         markup.contactRequestButton('Send contact'),
@@ -194,7 +193,7 @@ app.command('special', (ctx) => {
 })
 
 app.command('pyramid', (ctx) => {
-  return ctx.reply('Keyboard wrap', Extra.markup(
+  return ctx.reply('Keyboard wrap', Telegraf.Extra.markup(
     Markup.keyboard(['one', 'two', 'three', 'four', 'five', 'six'], {
       wrap: (btn, index, currentRow) => currentRow.length >= (index + 1) / 2
     })
@@ -202,13 +201,13 @@ app.command('pyramid', (ctx) => {
 })
 
 app.command('simple', (ctx) => {
-  return ctx.replyWithHTML('<b>Coke</b> or <i>Pepsi?</i>', Extra.markup(
+  return ctx.replyWithHTML('<b>Coke</b> or <i>Pepsi?</i>', Telegraf.Extra.markup(
     Markup.keyboard(['Coke', 'Pepsi'])
   ))
 })
 
 app.command('inline', (ctx) => {
-  return ctx.reply('<b>Coke</b> or <i>Pepsi?</i>', Extra.HTML().markup((m) =>
+  return ctx.reply('<b>Coke</b> or <i>Pepsi?</i>', Telegraf.Extra.HTML().markup((m) =>
     m.inlineKeyboard([
       m.callbackButton('Coke', 'Coke'),
       m.callbackButton('Pepsi', 'Pepsi')
@@ -226,7 +225,7 @@ app.command('random', (ctx) => {
 })
 
 app.hears(/\/wrap (\d+)/, (ctx) => {
-  return ctx.reply('Keyboard wrap', Extra.markup(
+  return ctx.reply('Keyboard wrap', Telegraf.Extra.markup(
     Markup.keyboard(['one', 'two', 'three', 'four', 'five', 'six'], {
       columns: parseInt(ctx.match[1])
     })
