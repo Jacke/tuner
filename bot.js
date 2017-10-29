@@ -40,7 +40,7 @@ const app = new Telegraf(BOT_TOKEN);
 app.use(Telegraf.memorySession());
 app.use(flow.middleware())
 app.use(commandParts());
-app.use(Telegraf.log())
+//app.use(Telegraf.log())
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// For testing purposes
@@ -215,13 +215,18 @@ app.command('inline', (ctx) => {
 })
 
 app.command('random', (ctx) => {
-  return ctx.reply('random example',
+  const fn = ctx.reply('random example',
     Markup.inlineKeyboard([
       Markup.callbackButton('Coke', 'Coke'),
       Markup.callbackButton('Dr Pepper', 'Dr Pepper', Math.random() > 0.5),
       Markup.callbackButton('Pepsi', 'Pepsi')
     ]).extra()
-  )
+  ).then((msg) => {
+    console.log('msg', msg);
+    ctx.state.lastEditMsg = msg.message_id;
+    return msg;
+  })
+  return fn;
 })
 
 app.hears(/\/wrap (\d+)/, (ctx) => {
@@ -236,11 +241,31 @@ app.action('Dr Pepper', (ctx, next) => {
   return ctx.reply('👍').then(next)
 })
 
-app.action(/.+/, (ctx) => {
-  return ctx.answerCallbackQuery(`Oh, ${ctx.match[0]}! Great choise`)
-})
 
+app.command('keyb', (ctx) => {
+    return ctx.reply('<b>Coke</b> or <i>Pepsi?</i>', Telegraf.Extra.HTML().markup((m) =>
+        m.inlineKeyboard([
+            m.callbackButton('Coke', 'Coke'),
+            m.callbackButton('Pepsi', 'Pepsi')
+        ])));
+});
 
+app.action('Coke', (ctx) => {
+  return exec('uptime', (status, answer) => {
+    return ctx.editMessageText(`Now: <b>7up</b> or <b>Fanta</b>? ${status}:${answer}`, Telegraf.Extra.HTML().markup(m => m.inlineKeyboard([
+        m.callbackButton('7up', '7up'),
+        m.callbackButton('Fanta', 'fanta'),
+        ])));    
+  })
+});
+app.action('7up', (ctx) => {
+  return exec('uptime', (status, answer) => {
+    return ctx.editMessageText(`<b>Coke</b> or <i>Pepsi?</i> ${status}:${answer}`, Telegraf.Extra.HTML().markup(m => m.inlineKeyboard([
+              m.callbackButton('Coke', 'Coke'),
+              m.callbackButton('Pepsi', 'Pepsi')
+        ])));    
+  })
+});
 
 // TBA //app.command('artists', (ctx) => ctx.reply('👍'));
 // TBA //app.command('albums', (ctx) => ctx.reply('👍'));
