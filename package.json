@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "crud-mongoose": "^1.0.32",
     "mongodb": "^2.2.33",
     "mongoose": "^4.12.4",
     "node-id3": "^0.1.0",
