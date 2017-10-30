@@ -40,7 +40,7 @@ const app = new Telegraf(BOT_TOKEN);
 app.use(Telegraf.memorySession());
 app.use(flow.middleware())
 app.use(commandParts());
-//app.use(Telegraf.log())
+app.use(Telegraf.log())
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// For testing purposes
@@ -83,7 +83,12 @@ app.command('start', startCommand)
 app.command('track', trackCommand)
 
 app.command('test', (ctx) => {
-  ctx.replyWithAudio({source: './a.mp3'});
+  ctx.telegram.sendMessage(177767196, `/serach t-fest`).then((f) => {
+    console.log('f', f);
+  })
+  ctx.reply("good");
+
+  //ctx.replyWithAudio({source: './a.mp3'});
 });
 
 app.command('tracks', tracksCommand);
